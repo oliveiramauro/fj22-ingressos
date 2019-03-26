@@ -21,7 +21,7 @@ public class Sessao {
 	private Filme filme;
 	
 	/**
-	*@deprecated Hibernate only
+	*@deprecated hibernate only
 	*/
 	public Sessao() {
 	}

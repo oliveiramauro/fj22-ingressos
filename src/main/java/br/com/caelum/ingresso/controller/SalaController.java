@@ -21,8 +21,8 @@ public class SalaController {
 
     @Autowired
     private SalaDao salaDao;
+    @Autowired
     private SessaoDao sessaoDao;
-
 
     @GetMapping({"/admin/sala", "/admin/sala/{id}"})
     public ModelAndView form(@PathVariable("id")Optional<Integer> id, Sala sala){
@@ -36,8 +36,6 @@ public class SalaController {
 
         return modelAndView;
     }
-
-
 
 
     @PostMapping("/admin/sala")
@@ -68,6 +66,7 @@ public class SalaController {
         Sala sala = salaDao.findOne(id);
 
         ModelAndView view = new ModelAndView("sessao/lista");
+        view.addObject("sala", sala);
         view.addObject("sessoes", sessaoDao.buscaSessoesDaSala(sala));
 
         return view;
