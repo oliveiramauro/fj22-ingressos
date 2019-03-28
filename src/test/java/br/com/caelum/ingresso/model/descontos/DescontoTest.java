@@ -11,21 +11,24 @@ import org.junit.Test;
 
 import br.com.caelum.ingresso.model.Filme;
 import br.com.caelum.ingresso.model.Ingresso;
+import br.com.caelum.ingresso.model.Lugar;
 import br.com.caelum.ingresso.model.Sala;
 import br.com.caelum.ingresso.model.Sessao;
+import br.com.caelum.ingresso.model.TipoDeIngresso;
 
 public class DescontoTest {
 	
 	private Sessao sessao;
 	private Ingresso ingresso;
+	private Lugar lugar;
 	BigDecimal precoEsperado;
 	
 	@Before
 	public void inicializa() {
 		Sala sala = new Sala ("Eldorado", new BigDecimal("20.5"));
 		Filme filme = new Filme ("Capitã Marvel", Duration.ofMinutes(120), "Aventura", new BigDecimal("12"));
-		
 		sessao = new Sessao(LocalTime.parse("10:00:00"), sala, filme);
+		lugar = new Lugar("A",1);
 	}
 	
 	@After
@@ -40,7 +43,7 @@ public class DescontoTest {
 //		Filme filme = new Filme ("Capitã Marvel", Duration.ofMinutes(120), "Aventura", new BigDecimal("12"));
 //		
 //		Sessao sessao = new Sessao(LocalTime.parse("10:00:00"), sala, filme);
-		ingresso = new Ingresso (sessao, new SemDesconto());
+		ingresso = new Ingresso (sessao, TipoDeIngresso.INTEIRO, lugar);
 		precoEsperado = new BigDecimal("32.50");
 		
 //		Essa comparação foi transferida para @After
@@ -50,13 +53,13 @@ public class DescontoTest {
 	
 	@Test
 	public void deveConcederDescontoDe30PorcentoParaIngressosDeClientesDeBancos () {
-		ingresso = new Ingresso (sessao, new DescontoParaBancos());
+		ingresso = new Ingresso (sessao, TipoDeIngresso.BANCO, lugar);
 		precoEsperado = new BigDecimal("22.75");		
 	}
 	
 	@Test
 	public void deveConcederDescontoDe50PorcentoParaIngressoDeEstudante () {
-		ingresso = new Ingresso (sessao, new DescontoParaEstudantes());
+		ingresso = new Ingresso (sessao, TipoDeIngresso.ESTUDANTE, lugar);
 		precoEsperado = new BigDecimal("16.25");		
 	}
 
